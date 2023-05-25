@@ -81,6 +81,7 @@ class UserAPIView(APIView):
         data['phone_number'] = raw['phone_number']
         data['is_employee'] = raw['is_employee']
         data['email'] = raw['email']
+        data['gender'] = raw['gender']
         return data
 
 class RefreshAPIView(APIView):
