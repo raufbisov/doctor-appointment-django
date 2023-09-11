@@ -17,19 +17,19 @@ class AppointmentsAPIView(APIView):
     permission_classes = [IsAuthenticated, IsEmployee]
     
     def post(self, request):
-        serializer = AppointmentSerializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+        s = AppointmentSerializer(data=request.data)
+        s.is_valid(raise_exception=True)
 
         appointments = request.user.employee.all()
 
-        if serializer.validated_data['start'] > serializer.validated_data['end']:
+        if s.validated_data['start'] > s.validated_data['end']:
             return Response(status.HTTP_400_BAD_REQUEST)
 
         for app in appointments:
-            if serializer.validated_data['start'] < app.end or serializer.validated_data['end'] < app.start:
+            if s.validated_data['start'] < app.end or s.validated_data['end'] < app.start:
                 return Response(status.HTTP_400_BAD_REQUEST)
         
-        serializer.save()
+        s.save()
 
         return Response(status.HTTP_201_CREATED)
 
